@@ -1,33 +1,30 @@
 //
-//  SecondViewController.swift
+//  ExpandViewController.swift
 //  ComFriends_sample
 //
-//  Created by KOUYA IWASE on 2018/10/23.
+//  Created by KOUYA IWASE on 2018/10/28.
 //  Copyright © 2018年 KOUYA IWASE. All rights reserved.
 //
-
 import UIKit
+import FirebaseDatabase
 
-class SecondViewController: UIViewController {
+class ExpandViewController: UIViewController {
+    
+    //データベースの参照先
+    var ref:DatabaseReference!
     
     //特性のイラスト読み込み
-    var first_illust=UIImage(named:"guitar")!
-    var second_illust=UIImage(named: "game")!
-    var third_illust=UIImage(named: "computer")!
-    var fourth_illust=UIImage(named: "student")!
+    
     //画面サイズを把握
     let screenWidth:CGFloat=UIScreen.main.bounds.size.width
     let screenHeight:CGFloat=UIScreen.main.bounds.size.height
     //画面内のイメージと結びつけ
-    @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var char1: UIImageView!
-    @IBOutlet weak var char2: UIImageView!
-    @IBOutlet weak var char3: UIImageView!
-    @IBOutlet weak var char4: UIImageView!
-    @IBOutlet weak var action: UIImageView!
+    
     //画面ロード時の処理
     override func viewDidLoad() {
         super.viewDidLoad()
+        //データベース参照
+        ref=Database.database().reference()
         //ネームラベルの初期設定
         name.isUserInteractionEnabled=true
         name.frame=CGRect(x:0,y:0,width:128,height:64)
@@ -78,7 +75,7 @@ class SecondViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-            }
+    }
     //ラベルと関連づけてイラストを移動させる関数
     func reset_location(){
         var viewFrame:CGRect=name.frame
@@ -117,12 +114,12 @@ class SecondViewController: UIViewController {
             self.name.isHidden=true
             self.name.center=CGPoint(x:self.screenWidth/2,y:self.screenHeight/2)
             self.reset_location()
-            UIView.transition(with: self.action, duration: 2.0, options: [.transitionCrossDissolve,.autoreverse], animations: {
-                self.action.isHidden = false
-            }) { _ in
-                self.action.isHidden = true
+            self.action.isHidden=false
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.action.isHidden=true
             }
+            
+            
         }
     }
 }
-
