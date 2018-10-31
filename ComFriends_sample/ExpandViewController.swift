@@ -12,13 +12,18 @@ class ExpandViewController: UIViewController {
     
     //データベースの参照先
     var ref:DatabaseReference!
-    
-    //特性のイラスト読み込み
-    
+    //DB参照時のID
+    var search_id:Int=1
     //画面サイズを把握
     let screenWidth:CGFloat=UIScreen.main.bounds.size.width
     let screenHeight:CGFloat=UIScreen.main.bounds.size.height
     //画面内のイメージと結びつけ
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var char1: UIImageView!
+    @IBOutlet weak var char2: UIImageView!
+    @IBOutlet weak var char3: UIImageView!
+    @IBOutlet weak var char4: UIImageView!
+    @IBOutlet weak var action: UIImageView!
     
     //画面ロード時の処理
     override func viewDidLoad() {
@@ -31,10 +36,7 @@ class ExpandViewController: UIViewController {
         name.center=CGPoint(x:screenWidth/2,y:screenHeight/2)
         reset_location()
         //イラストを対応
-        char1.image=first_illust
-        char2.image=second_illust
-        char3.image=third_illust
-        char4.image=fourth_illust
+        friends_reset()
         action.isHidden=true
         action.center=CGPoint(x:screenWidth/2,y:screenHeight/2)
     }
@@ -117,9 +119,69 @@ class ExpandViewController: UIViewController {
             self.action.isHidden=false
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.action.isHidden=true
+                self.friends_reset()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.name.isHidden=false
+                    self.char1.isHidden=false
+                    self.char2.isHidden=false
+                    self.char3.isHidden=false
+                    self.char4.isHidden=false
+                }
             }
-            
-            
+        }
+        UIApplication.shared.endIgnoringInteractionEvents()
+    }
+    //リアクション後の表示プロフィールの変更
+    func friends_reset(){
+        var readname:String="wait_time"
+        if(search_id.description==userid){
+            search_id+=1
+            print("this user is you")
+        }
+        print(search_id.description)
+        ref.child("users/"+search_id.description+"/username").observe(.value) { (snap: DataSnapshot) in  readname=(snap.value! as AnyObject).description
+        }
+        wait({return readname=="wait_time"}){
+            print(readname)
+            if(readname=="<null>"){
+                print("Finish!")
+            }else{
+                self.name.text=readname
+                self.ImageDBset(data: "char1", obj: self.char1)
+                self.ImageDBset(data: "char2", obj: self.char2)
+                self.ImageDBset(data: "char3", obj: self.char3)
+                self.ImageDBset(data: "char4", obj: self.char4)
+                self.search_id+=1
+            }
+        }
+    }
+    //プロフィールに表示する画像の設定
+    func ImageDBset(data:String,obj:UIImageView){
+        var imagename:String="wait_time"
+        ref.child("users/"+self.search_id.description+"/"+data).observe(.value) { (snap: DataSnapshot) in  imagename=(snap.value! as AnyObject).description
+        }
+        wait({return imagename=="wait_time"}){
+            obj.image=UIImage(named: imagename)
+        }
+    }
+    //同期用wait関数
+    func wait(_ waitContinuation: @escaping (()->Bool), compleation: @escaping (()->Void)) {
+        var wait = waitContinuation()
+        // 0.01秒周期で待機条件をクリアするまで待ちます。
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            while wait {
+                DispatchQueue.main.async {
+                    wait = waitContinuation()
+                    semaphore.signal()
+                }
+                semaphore.wait()
+                Thread.sleep(forTimeInterval: 0.01)
+            }
+            // 待機条件をクリアしたので通過後の処理を行います。
+            DispatchQueue.main.async {
+                compleation()
+            }
         }
     }
 }

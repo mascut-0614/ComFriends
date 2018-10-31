@@ -53,7 +53,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCR-Xh-S7u" userLabel="Name">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tCR-Xh-S7u" userLabel="Name">
                                 <rect key="frame" x="123" y="301" width="128" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.20282519339999999" green="0.7439939538" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -70,11 +70,15 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l1W-IF-MeY" userLabel="Char3">
-                                <rect key="frame" x="203" y="387.5" width="128" height="128"/>
+                                <rect key="frame" x="203" y="387" width="128" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bjr-Bd-8tU" userLabel="Char4">
                                 <rect key="frame" x="43" y="387" width="128" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qAC-gd-CoG">
+                                <rect key="frame" x="59" y="205" width="256" height="256"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -82,6 +86,14 @@
                         <viewLayoutGuide key="safeArea" id="Bj1-ZM-AYX"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Expand" image="expand" id="lRe-yv-aoc" userLabel="Expand"/>
+                    <connections>
+                        <outlet property="action" destination="qAC-gd-CoG" id="ad4-Jn-Q7c"/>
+                        <outlet property="char1" destination="Cfa-PS-SHQ" id="4yT-li-22n"/>
+                        <outlet property="char2" destination="FQH-ak-g1l" id="jRc-B6-Upo"/>
+                        <outlet property="char3" destination="l1W-IF-MeY" id="l0e-Jj-faR"/>
+                        <outlet property="char4" destination="Bjr-Bd-8tU" id="c6O-yk-kbH"/>
+                        <outlet property="name" destination="tCR-Xh-S7u" id="lic-oi-XxL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Udi-KW-qA8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
