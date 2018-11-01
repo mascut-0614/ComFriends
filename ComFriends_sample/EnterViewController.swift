@@ -18,7 +18,7 @@ class EnterViewController: UIViewController {
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var login: UIButton!
     
-    var accessname:String="wait"
+    var accessname:String="wait_time"
     override func viewDidLoad() {
         super.viewDidLoad()
         //データベース参照
@@ -28,19 +28,19 @@ class EnterViewController: UIViewController {
         userid=id.text!
         ref.child("users/"+userid+"/username").observe(.value) { (snap: DataSnapshot) in self.accessname=(snap.value! as AnyObject).description
         }
-        wait( { return self.accessname=="wait" }){
+        wait( { return self.accessname=="wait_time" }){
             print("finish")
             print(userid)
             print(self.accessname)
             if(self.accessname=="<null>"){
                 self.name.placeholder="No UserID"
-                self.accessname="wait"
+                self.accessname="wait_time"
             }else if(self.accessname==self.name.text){
                 self.name.placeholder="Success"
                 self.performSegue(withIdentifier: "LoginSuccess", sender: nil)
             }else{
                 self.name.placeholder="Name is wrong"
-                self.accessname="wait"
+                self.accessname="wait_time"
             }
         }
     }
