@@ -76,6 +76,7 @@
                     <tabBarItem key="tabBarItem" title="Message" image="message" id="7hJ-he-bP8" userLabel="Message"/>
                     <connections>
                         <outlet property="TableView" destination="kgy-eT-gAb" id="w8O-zz-NKE"/>
+                        <segue destination="iS2-eU-kFH" kind="presentation" identifier="goTalking" id="kyR-cL-CNE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdq-bp-hdT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -241,6 +242,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rt2-80-Iwl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1834.4000000000001" y="-37.331334332833585"/>
+        </scene>
+        <!--Talking-->
+        <scene sceneID="8Ff-ig-Bja">
+            <objects>
+                <viewController id="iS2-eU-kFH" userLabel="Talking" customClass="TalkingViewController" customModule="ComFriends_sample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uZJ-we-d0m">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="CTR-PS-52Z"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PZg-he-oLf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="404" y="-710"/>
         </scene>
     </scenes>
     <resources>

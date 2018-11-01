@@ -29,6 +29,10 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.performSegue(withIdentifier: "goTalking", sender: nil)
+    }
+    
     func tableView(_ table: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0

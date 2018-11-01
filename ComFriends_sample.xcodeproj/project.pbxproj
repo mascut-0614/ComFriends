@@ -18,6 +18,7 @@
 		2288C43F217F10A8008A2679 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2288C43D217F10A8008A2679 /* LaunchScreen.storyboard */; };
 		2288C44A217F10A9008A2679 /* ComFriends_sampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2288C449217F10A9008A2679 /* ComFriends_sampleTests.swift */; };
 		2288C455217F10A9008A2679 /* ComFriends_sampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2288C454217F10A9008A2679 /* ComFriends_sampleUITests.swift */; };
+		22A10954218AD12F00EEF239 /* TalkingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A10953218AD12F00EEF239 /* TalkingViewController.swift */; };
 		2E2A96D5C03991C2F0FBD1E7 /* Pods_ComFriends_sampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76AD5DF0C469CF2B12A5CE3D /* Pods_ComFriends_sampleTests.framework */; };
 		BEAFFD8E0267AC995FA3F96E /* Pods_ComFriends_sampleUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 855596673CCFCC10B7B8CE2E /* Pods_ComFriends_sampleUITests.framework */; };
 		C1135032AE53DF38667B94B9 /* Pods_ComFriends_sample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 880EAD22289AA6AE508CDDAF /* Pods_ComFriends_sample.framework */; };
@@ -58,6 +59,7 @@
 		2288C450217F10A9008A2679 /* ComFriends_sampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ComFriends_sampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2288C454217F10A9008A2679 /* ComFriends_sampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComFriends_sampleUITests.swift; sourceTree = "<group>"; };
 		2288C456217F10A9008A2679 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22A10953218AD12F00EEF239 /* TalkingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkingViewController.swift; sourceTree = "<group>"; };
 		3BE9B2E2D68DBBEE0E6E5940 /* Pods-ComFriends_sampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ComFriends_sampleTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ComFriends_sampleTests/Pods-ComFriends_sampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		42B92A6D97FBA8F2EDA1DF2B /* Pods-ComFriends_sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ComFriends_sample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ComFriends_sample/Pods-ComFriends_sample.debug.xcconfig"; sourceTree = "<group>"; };
 		76AD5DF0C469CF2B12A5CE3D /* Pods_ComFriends_sampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ComFriends_sampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +129,7 @@
 				221062AB2185F42B00C19E9B /* MessageViewController.swift */,
 				221062AD2185F44200C19E9B /* ExpandViewController.swift */,
 				221062AF2185F45B00C19E9B /* ProfileViewController.swift */,
+				22A10953218AD12F00EEF239 /* TalkingViewController.swift */,
 				2288C438217F10A5008A2679 /* Main.storyboard */,
 				2288C43B217F10A8008A2679 /* Assets.xcassets */,
 				2288C43D217F10A8008A2679 /* LaunchScreen.storyboard */,
@@ -399,6 +402,7 @@
 				221062AE2185F44300C19E9B /* ExpandViewController.swift in Sources */,
 				2288C433217F10A5008A2679 /* AppDelegate.swift in Sources */,
 				221062B02185F45B00C19E9B /* ProfileViewController.swift in Sources */,
+				22A10954218AD12F00EEF239 /* TalkingViewController.swift in Sources */,
 				221062AC2185F42B00C19E9B /* MessageViewController.swift in Sources */,
 				221062AA2185F40800C19E9B /* EnterViewController.swift in Sources */,
 			);
