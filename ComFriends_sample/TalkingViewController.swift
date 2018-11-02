@@ -27,7 +27,7 @@ class TalkingViewController:JSQMessagesViewController {
     
     func setupFirebase(){
         let rootRef = Database.database().reference()
-        rootRef.queryLimited(toLast: 100).observe(DataEventType.childAdded, with: { (snapshot) in
+        rootRef.child(talkAdress).queryLimited(toLast: 100).observe(DataEventType.childAdded, with: { (snapshot) in
             var valueDic=snapshot.value as? NSDictionary
             let text = valueDic?["text"] as? String ?? ""
             let sender = valueDic?["from"] as? String ?? ""
@@ -43,14 +43,14 @@ class TalkingViewController:JSQMessagesViewController {
         inputToolbar!.contentView!.leftBarButtonItem = nil
         automaticallyScrollsToMostRecentMessage = true
         //自分のID、アイコン、相手のアイコンの設定
-        self.senderId = "user1"
-        self.incomingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named:"profile")!,diameter: 64)
-        self.outgoingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "guitar")!, diameter: 64)
+        self.senderId = accessname
+        self.incomingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named:"you")!,diameter: 64)
+        self.outgoingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "me")!, diameter: 64)
         //BubbleImageの生成
         let bubbleFactory = JSQMessagesBubbleImageFactory()
         //通信相手の発言
         self.incomingBubble = bubbleFactory?.incomingMessagesBubbleImage(
-            with: UIColor.jsq_messageBubbleLightGray())
+            with: UIColor.jsq_messageBubbleGreen())
         //自分の発言
         self.outgoingBubble = bubbleFactory?.outgoingMessagesBubbleImage(
             with: UIColor.jsq_messageBubbleBlue())
@@ -65,7 +65,7 @@ class TalkingViewController:JSQMessagesViewController {
         let post = ["from": senderId,
                     "name": senderDisplayName,
                     "text": text]
-        let postRef = rootRef.childByAutoId()
+        let postRef = rootRef.child(talkAdress).childByAutoId()
         postRef.setValue(post)
     }
     
@@ -91,6 +91,10 @@ class TalkingViewController:JSQMessagesViewController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (self.messages?.count)!
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     override func didReceiveMemoryWarning() {

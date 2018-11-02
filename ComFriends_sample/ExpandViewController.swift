@@ -65,7 +65,53 @@ class ExpandViewController: UIViewController {
             action.image=UIImage(named: "not_interest")
             reaction_animation(check: false)
         }else if(name.frame.origin.y>500){
+            var check:String="wait_time"
             action.image=UIImage(named:"interest")
+            ref.child("users/"+userid+"/interest/"+search_id.description).setValue("yes")
+            ref.child("users/"+search_id.description+"/interest/"+userid).observe(.value) { (snap: DataSnapshot) in  check=(snap.value! as AnyObject).description
+            }
+            wait({return check=="wait_time"}){
+                print("check="+check)
+                if(check=="yes"){
+                    //相手側のトークルーム数を変更
+                    var you_temp:String=""
+                    var you_int:Int=999
+                    var you_check:Bool=true
+                    self.ref.child("users/"+self.search_id.description+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  you_temp=(snap.value! as AnyObject).description
+                        you_int=Int(you_temp)!
+                    }
+                    self.wait({return you_int==999}){
+                        print("before you="+you_int.description)
+                        you_int+=1
+                        print("after you="+you_int.description)
+                        self.ref.child("users/"+self.search_id.description+"/talkroom/sum").setValue(you_int.description)
+                        you_check=false
+                    }
+                    //自分側のトークルーム数を変更
+                    var me_temp:String=""
+                    var me_int:Int=999
+                    var me_check:Bool=true
+                    self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  me_temp=(snap.value! as AnyObject).description
+                        me_int=Int(me_temp)!
+                    }
+                    self.wait({return me_int==999}){
+                        print("before me="+me_int.description)
+                        me_int+=1
+                        print("after me="+me_int.description)
+                        self.ref.child("users/"+userid+"/talkroom/sum").setValue(me_int.description)
+                        me_check=false
+                    }
+                    //トークルームの生成
+                    self.wait({return (me_check||you_check)}){
+                        print("you="+you_int.description)
+                        print("me="+me_int.description)
+                        let address:String="messages/talk"+userid+"_"+self.search_id.description
+                        self.ref.child(address).setValue("hello")
+                        self.ref.child("users/"+self.search_id.description+"/talkroom/"+you_int.description).setValue(["name":accessname,"room":address])
+                        self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["name":self.name.text,"room":address])
+                    }
+                }
+            }
             reaction_animation(check: true)
         }else{
             //ラベル、イラストを中央へ戻す
@@ -117,16 +163,10 @@ class ExpandViewController: UIViewController {
             self.name.center=CGPoint(x:self.screenWidth/2,y:self.screenHeight/2)
             self.reset_location()
             self.action.isHidden=false
+            self.search_id+=1
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 self.action.isHidden=true
                 self.friends_reset()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.name.isHidden=false
-                    self.char1.isHidden=false
-                    self.char2.isHidden=false
-                    self.char3.isHidden=false
-                    self.char4.isHidden=false
-                }
             }
         }
         UIApplication.shared.endIgnoringInteractionEvents()
@@ -151,7 +191,14 @@ class ExpandViewController: UIViewController {
                 self.ImageDBset(data: "char2", obj: self.char2)
                 self.ImageDBset(data: "char3", obj: self.char3)
                 self.ImageDBset(data: "char4", obj: self.char4)
-                self.search_id+=1
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.name.isHidden=false
+                    self.char1.isHidden=false
+                    self.char2.isHidden=false
+                    self.char3.isHidden=false
+                    self.char4.isHidden=false
+                }
             }
         }
     }

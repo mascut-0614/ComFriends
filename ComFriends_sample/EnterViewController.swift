@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 var userid:String=""
+var accessname:String="wait_time"
 
 class EnterViewController: UIViewController {
     //データベースの参照先
@@ -17,32 +18,38 @@ class EnterViewController: UIViewController {
     @IBOutlet weak var id: UITextField!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var login: UIButton!
+    @IBOutlet weak var register: UIButton!
     
-    var accessname:String="wait_time"
     override func viewDidLoad() {
         super.viewDidLoad()
         //データベース参照
         ref=Database.database().reference()
     }
+    @IBAction func touchRegister(_ sender: Any) {
+        performSegue(withIdentifier: "goRegister", sender: nil)
+    }
     @IBAction func touchLogin(_ sender: Any) {
         userid=id.text!
-        ref.child("users/"+userid+"/username").observe(.value) { (snap: DataSnapshot) in self.accessname=(snap.value! as AnyObject).description
+        ref.child("users/"+userid+"/username").observe(.value) { (snap: DataSnapshot) in accessname=(snap.value! as AnyObject).description
         }
-        wait( { return self.accessname=="wait_time" }){
+        wait( { return accessname=="wait_time" }){
             print("finish")
             print(userid)
-            print(self.accessname)
-            if(self.accessname=="<null>"){
+            print(accessname)
+            if(accessname=="<null>"){
                 self.name.placeholder="No UserID"
-                self.accessname="wait_time"
-            }else if(self.accessname==self.name.text){
+                accessname="wait_time"
+            }else if(accessname==self.name.text){
                 self.name.placeholder="Success"
                 self.performSegue(withIdentifier: "LoginSuccess", sender: nil)
             }else{
                 self.name.placeholder="Name is wrong"
-                self.accessname="wait_time"
+                accessname="wait_time"
             }
         }
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     //同期処理用wait関数
     func wait(_ waitContinuation: @escaping (()->Bool), compleation: @escaping (()->Void)) {

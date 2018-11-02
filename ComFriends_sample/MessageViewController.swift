@@ -7,35 +7,84 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
+var talkAdress:String=""
 class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
+    @IBOutlet weak var Reload: UIButton!
+    
+    var ref:DatabaseReference!
+    var sum:Int=0
     
     override func viewDidLoad() {
-        super.viewDidLoad()
+        ref=Database.database().reference()
+        var temp:String="wait_time"
+        self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  temp=(snap.value! as AnyObject).description
+        }
+        wait({return temp=="wait_time"}){
+            self.sum=Int(temp)!
+            self.TableView.reloadData()
+            super.viewDidLoad()
+        }
+    }
+    @IBAction func reloadTable(_ sender: Any) {
+        var temp:String="wait_time"
+        self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  temp=(snap.value! as AnyObject).description
+        }
+        wait({return temp=="wait_time"}){
+            self.sum=Int(temp)!
+            self.TableView.reloadData()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return sum
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell:UITableViewCell=tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
-        let img=UIImage(named:"profile")
-        let imageView=cell.viewWithTag(1) as! UIImageView
-        imageView.image=img
-        let name=cell.viewWithTag(2) as! UILabel
-        name.text="User"+String(indexPath.row+1)
+        let name=cell.viewWithTag(1) as! UILabel
+        let address=cell.viewWithTag(2) as! UILabel
+        address.isHidden=true
+        self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/name").observe(.value) { (snap: DataSnapshot) in  name.text=(snap.value! as AnyObject).description
+        }
+        self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/room").observe(.value){
+            (snap: DataSnapshot) in  address.text=(snap.value! as AnyObject).description
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell:UITableViewCell=tableView.cellForRow(at: indexPath)!
+        let address=cell.viewWithTag(2) as! UILabel
+        talkAdress=address.text!
         self.performSegue(withIdentifier: "goTalking", sender: nil)
     }
     
     func tableView(_ table: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0
+    }
+    
+    func wait(_ waitContinuation: @escaping (()->Bool), compleation: @escaping (()->Void)) {
+        var wait = waitContinuation()
+        // 0.01秒周期で待機条件をクリアするまで待ちます。
+        let semaphore = DispatchSemaphore(value: 0)
+        DispatchQueue.global().async {
+            while wait {
+                DispatchQueue.main.async {
+                    wait = waitContinuation()
+                    semaphore.signal()
+                }
+                semaphore.wait()
+                Thread.sleep(forTimeInterval: 0.01)
+            }
+            // 待機条件をクリアしたので通過後の処理を行います。
+            DispatchQueue.main.async {
+                compleation()
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
