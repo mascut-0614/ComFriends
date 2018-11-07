@@ -107,8 +107,8 @@ class ExpandViewController: UIViewController {
                         print("me="+me_int.description)
                         let address:String="messages/talk"+userid+"_"+self.search_id.description
                         self.ref.child(address).setValue("hello")
-                        self.ref.child("users/"+self.search_id.description+"/talkroom/"+you_int.description).setValue(["name":accessname,"room":address])
-                        self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["name":self.name.text,"room":address])
+                        self.ref.child("users/"+self.search_id.description+"/talkroom/"+you_int.description).setValue(["oppid":userid,"name":accessname,"room":address])
+                        self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["oppid":self.search_id.description,"name":self.name.text,"room":address])
                     }
                 }
             }

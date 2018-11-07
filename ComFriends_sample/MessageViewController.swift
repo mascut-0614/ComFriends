@@ -10,12 +10,14 @@ import UIKit
 import FirebaseDatabase
 
 var talkAdress:String=""
+var avatarid:String=""
 class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var Reload: UIButton!
     
     var ref:DatabaseReference!
     var sum:Int=0
+    
     
     override func viewDidLoad() {
         ref=Database.database().reference()
@@ -46,7 +48,11 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let cell:UITableViewCell=tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
         let name=cell.viewWithTag(1) as! UILabel
         let address=cell.viewWithTag(2) as! UILabel
+        let id=cell.viewWithTag(3) as! UILabel
         address.isHidden=true
+        id.isHidden=true
+        self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/oppid").observe(.value) { (snap: DataSnapshot) in  id.text=(snap.value! as AnyObject).description
+        }
         self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/name").observe(.value) { (snap: DataSnapshot) in  name.text=(snap.value! as AnyObject).description
         }
         self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/room").observe(.value){
@@ -58,6 +64,8 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell:UITableViewCell=tableView.cellForRow(at: indexPath)!
         let address=cell.viewWithTag(2) as! UILabel
+        let id=cell.viewWithTag(3) as! UILabel
+        avatarid=id.text!
         talkAdress=address.text!
         self.performSegue(withIdentifier: "goTalking", sender: nil)
     }

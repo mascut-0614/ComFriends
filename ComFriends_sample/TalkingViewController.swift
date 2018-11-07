@@ -28,7 +28,7 @@ class TalkingViewController:JSQMessagesViewController {
     func setupFirebase(){
         let rootRef = Database.database().reference()
         rootRef.child(talkAdress).queryLimited(toLast: 100).observe(DataEventType.childAdded, with: { (snapshot) in
-            var valueDic=snapshot.value as? NSDictionary
+            let valueDic=snapshot.value as? NSDictionary
             let text = valueDic?["text"] as? String ?? ""
             let sender = valueDic?["from"] as? String ?? ""
             let name = valueDic?["name"] as? String ?? ""
@@ -70,6 +70,7 @@ class TalkingViewController:JSQMessagesViewController {
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView, messageDataForItemAt indexPath: IndexPath) -> JSQMessageData {
+        collectionView.frame=CGRect(x:0,y:200,width:375,height:600)
         return (self.messages?[indexPath.item])!
     }
     
@@ -95,6 +96,21 @@ class TalkingViewController:JSQMessagesViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
+        if(messages![indexPath.row].senderId != senderId){
+            let avatarImageTap = UITapGestureRecognizer(target: self, action:#selector(tappedAvatar(_sender:)))
+            cell.avatarImageView?.isUserInteractionEnabled = true
+            cell.avatarImageView?.addGestureRecognizer(avatarImageTap)
+        }
+        return cell
+    }
+    
+    @objc func tappedAvatar(_sender:UITapGestureRecognizer) {
+        print("tapped user avatar")
+        self.performSegue(withIdentifier: "goAvatar", sender: nil)
     }
     
     override func didReceiveMemoryWarning() {
