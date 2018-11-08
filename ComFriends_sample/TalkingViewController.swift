@@ -19,6 +19,7 @@ class TalkingViewController:JSQMessagesViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title=avatarname
         setupFirebase()
         setupChatUI()
         self.senderDisplayName=userid
@@ -68,9 +69,12 @@ class TalkingViewController:JSQMessagesViewController {
         let postRef = rootRef.child(talkAdress).childByAutoId()
         postRef.setValue(post)
     }
+    @IBAction func BackButton(_ sender: Any) {
+        self.performSegue(withIdentifier: "BackMessage", sender: nil)
+    }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView, messageDataForItemAt indexPath: IndexPath) -> JSQMessageData {
-        collectionView.frame=CGRect(x:0,y:200,width:375,height:600)
+        collectionView.frame=CGRect(x:0,y:50,width:375,height:600)
         return (self.messages?[indexPath.item])!
     }
     

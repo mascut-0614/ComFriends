@@ -11,6 +11,8 @@ import FirebaseDatabase
 
 var talkAdress:String=""
 var avatarid:String=""
+var avatarname:String=""
+
 class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var Reload: UIButton!
@@ -63,10 +65,12 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell:UITableViewCell=tableView.cellForRow(at: indexPath)!
+        let name=cell.viewWithTag(1) as! UILabel
         let address=cell.viewWithTag(2) as! UILabel
         let id=cell.viewWithTag(3) as! UILabel
         avatarid=id.text!
         talkAdress=address.text!
+        avatarname=name.text!
         self.performSegue(withIdentifier: "goTalking", sender: nil)
     }
     

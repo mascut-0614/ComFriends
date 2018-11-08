@@ -20,7 +20,7 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="RCv-kP-etu" kind="relationship" relationship="viewControllers" id="hav-PZ-ZF5"/>
+                        <segue destination="RCv-kP-etu" kind="relationship" relationship="viewControllers" id="ZCn-X7-BLA"/>
                         <segue destination="EV2-ms-BSt" kind="relationship" relationship="viewControllers" id="Y8Q-Qj-INC"/>
                         <segue destination="hLv-DN-g8i" kind="relationship" relationship="viewControllers" id="JES-4S-71f"/>
                     </connections>
@@ -28,6 +28,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1118" y="-37"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bfv-iC-nzP">
+            <objects>
+                <navigationController id="C9e-LM-Ra2" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b7V-0d-Knn">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="iS2-eU-kFH" kind="relationship" relationship="rootViewController" id="QBS-Wq-szH"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z72-N0-UbB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="71" y="-1400"/>
         </scene>
         <!--Message-->
         <scene sceneID="LYv-lv-Sh0">
@@ -99,7 +115,7 @@
                     <connections>
                         <outlet property="Reload" destination="0az-SQ-J81" id="AvR-qb-hq9"/>
                         <outlet property="TableView" destination="kgy-eT-gAb" id="w8O-zz-NKE"/>
-                        <segue destination="iS2-eU-kFH" kind="presentation" identifier="goTalking" id="kyR-cL-CNE"/>
+                        <segue destination="C9e-LM-Ra2" kind="presentation" identifier="goTalking" id="pDh-I5-rAA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cdq-bp-hdT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -336,23 +352,24 @@
                     <view key="view" contentMode="scaleToFill" id="uZJ-we-d0m">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ide-Yl-yo3">
-                                <rect key="frame" x="16" y="50" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="CTR-PS-52Z"/>
                     </view>
+                    <navigationItem key="navigationItem" id="eTW-ge-fWC">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="Iyk-hp-Za4">
+                            <connections>
+                                <action selector="BackButton:" destination="iS2-eU-kFH" id="SyR-ho-fpj"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <segue destination="2K9-Vt-0cr" kind="presentation" identifier="goAvatar" id="Z6M-cc-kUt"/>
+                        <segue destination="49e-Tb-3d3" kind="presentation" identifier="BackMessage" id="pGd-KT-t2b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PZg-he-oLf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="404" y="-710"/>
+            <point key="canvasLocation" x="404" y="-710.19490254872574"/>
         </scene>
         <!--Avatar-->
         <scene sceneID="xqW-t4-ILm">
@@ -420,6 +437,7 @@
         <image name="profile" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fKm-bQ-4nv"/>
+        <segue reference="QBS-Wq-szH"/>
+        <segue reference="pGd-KT-t2b"/>
     </inferredMetricsTieBreakers>
 </document>
