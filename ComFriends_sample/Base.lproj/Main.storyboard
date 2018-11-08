@@ -423,7 +423,7 @@
                         <outlet property="char2" destination="YrZ-TO-gmj" id="Vg7-gq-HZQ"/>
                         <outlet property="char3" destination="XoX-Fk-Fdg" id="yhW-hf-cxz"/>
                         <outlet property="char4" destination="uk9-Gq-bm7" id="ZFU-nx-Ki1"/>
-                        <segue destination="iS2-eU-kFH" kind="presentation" identifier="goTalking" id="fKm-bQ-4nv"/>
+                        <segue destination="C9e-LM-Ra2" kind="presentation" identifier="goTalking" id="l4f-4k-cR4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YN4-Jk-Hcr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -437,7 +437,7 @@
         <image name="profile" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QBS-Wq-szH"/>
+        <segue reference="l4f-4k-cR4"/>
         <segue reference="pGd-KT-t2b"/>
     </inferredMetricsTieBreakers>
 </document>
