@@ -1,10 +1,4 @@
-//
-//  TalkingViewController.swift
-//  ComFriends_sample
-//
-//  Created by KOUYA IWASE on 2018/11/01.
-//  Copyright © 2018年 KOUYA IWASE. All rights reserved.
-//
+
 import UIKit
 import FirebaseDatabase
 import JSQMessagesViewController
@@ -24,6 +18,9 @@ class TalkingViewController:JSQMessagesViewController {
         setupChatUI()
         self.senderDisplayName=userid
         self.messages=[]
+    }
+    @IBAction func Profile(_ sender: Any) {
+        self.performSegue(withIdentifier: "goAvatar", sender: nil)
     }
     
     func setupFirebase(){
@@ -100,21 +97,6 @@ class TalkingViewController:JSQMessagesViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
-        if(messages![indexPath.row].senderId != senderId){
-            let avatarImageTap = UITapGestureRecognizer(target: self, action:#selector(tappedAvatar(_sender:)))
-            cell.avatarImageView?.isUserInteractionEnabled = true
-            cell.avatarImageView?.addGestureRecognizer(avatarImageTap)
-        }
-        return cell
-    }
-    
-    @objc func tappedAvatar(_sender:UITapGestureRecognizer) {
-        print("tapped user avatar")
-        self.performSegue(withIdentifier: "goAvatar", sender: nil)
     }
     
     override func didReceiveMemoryWarning() {

@@ -1,10 +1,3 @@
-//
-//  MessageViewController.swift
-//  ComFriends_sample
-//
-//  Created by KOUYA IWASE on 2018/10/28.
-//  Copyright © 2018年 KOUYA IWASE. All rights reserved.
-//
 
 import UIKit
 import FirebaseDatabase
@@ -12,12 +5,13 @@ import FirebaseDatabase
 var talkAdress:String=""
 var avatarid:String=""
 var avatarname:String=""
+var tab_change:Bool=false
 
 class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
     @IBOutlet weak var TableView: UITableView!
-    @IBOutlet weak var Reload: UIButton!
     
     var ref:DatabaseReference!
+    var wc=WaitController()
     var sum:Int=0
     
     
@@ -26,20 +20,31 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
         var temp:String="wait_time"
         self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  temp=(snap.value! as AnyObject).description
         }
-        wait({return temp=="wait_time"}){
+        wc.wait({return temp=="wait_time"}){
             self.sum=Int(temp)!
             self.TableView.reloadData()
             super.viewDidLoad()
         }
+        
     }
-    @IBAction func reloadTable(_ sender: Any) {
-        var temp:String="wait_time"
-        self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  temp=(snap.value! as AnyObject).description
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if(tab_change==false){
+            var temp:String="wait_time"
+            self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  temp=(snap.value! as AnyObject).description
+            }
+            wc.wait({return temp=="wait_time"}){
+                self.sum=Int(temp)!
+                self.TableView.reloadData()
+            }
+        }else{
+            tab_change=false
+            self.tabBarController?.selectedIndex=1
         }
-        wait({return temp=="wait_time"}){
-            self.sum=Int(temp)!
-            self.TableView.reloadData()
-        }
+    }
+    
+    @IBAction func LogoutButton(_ sender: Any) {
+        self.performSegue(withIdentifier: "logout_from_message", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,6 +56,7 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
         let name=cell.viewWithTag(1) as! UILabel
         let address=cell.viewWithTag(2) as! UILabel
         let id=cell.viewWithTag(3) as! UILabel
+        name.text=""
         address.isHidden=true
         id.isHidden=true
         self.ref.child("users/"+userid+"/talkroom/"+(indexPath.row+1).description+"/oppid").observe(.value) { (snap: DataSnapshot) in  id.text=(snap.value! as AnyObject).description
@@ -77,31 +83,6 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
     func tableView(_ table: UITableView,
                    heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0
-    }
-    
-    func wait(_ waitContinuation: @escaping (()->Bool), compleation: @escaping (()->Void)) {
-        var wait = waitContinuation()
-        // 0.01秒周期で待機条件をクリアするまで待ちます。
-        let semaphore = DispatchSemaphore(value: 0)
-        DispatchQueue.global().async {
-            while wait {
-                DispatchQueue.main.async {
-                    wait = waitContinuation()
-                    semaphore.signal()
-                }
-                semaphore.wait()
-                Thread.sleep(forTimeInterval: 0.01)
-            }
-            // 待機条件をクリアしたので通過後の処理を行います。
-            DispatchQueue.main.async {
-                compleation()
-            }
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-     super.didReceiveMemoryWarning()
-     // Dispose of any resources that can be recreated.
     }
     
 }
