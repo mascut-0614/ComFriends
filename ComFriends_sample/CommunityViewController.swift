@@ -9,6 +9,7 @@ class CommunityViewController:UIViewController,UIPickerViewDelegate,UIPickerView
     let pickerView=UIPickerView()
     var vi=UIView()
     var grade:Int=0
+    var secret:Int=0
     var array=["---","政治経済学部","政治経済学術院","法学部","法学術院","文化構想学部","文学部","文学学術院","教育学部","教育・総合科学学術院","商学部","商学学術院","基幹理工学部","創造理工学部","先進理工学部","理工学術院","社会科学部","社会科学総合学術院","人間科学部","人間科学学術院","スポーツ科学部","スポーツ科学学術院","国際教養学部","国際学術院"]
     
     @IBOutlet weak var Department: UIButton!
@@ -16,6 +17,8 @@ class CommunityViewController:UIViewController,UIPickerViewDelegate,UIPickerView
     @IBOutlet weak var Attention2: UIImageView!
     @IBOutlet weak var Start: UIButton!
     @IBOutlet weak var Grade: UISegmentedControl!
+    @IBOutlet weak var Secret: UISegmentedControl!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +36,8 @@ class CommunityViewController:UIViewController,UIPickerViewDelegate,UIPickerView
         if(Department.titleLabel!.text! != "---"){
             Attention2.isHidden=true
             grade=Grade.selectedSegmentIndex
-            ref.child("users/"+num.description+"/community").setValue(["grade":Grade.titleForSegment(at: grade),"department":Department.titleLabel!.text!,"club":Club.text!])
+            secret=Secret.selectedSegmentIndex
+            ref.child("users/"+num.description+"/community").setValue(["grade":Grade.titleForSegment(at: grade),"department":Department.titleLabel!.text!,"club":Club.text!,"range":Secret.titleForSegment(at: secret)])
             ref.child("users/sum").setValue(num.description)
             //self.performSegue(withIdentifier: "ResisterFinish", sender: nil)
             let alert:UIAlertController=UIAlertController(title: "Your ID = "+num.description, message: "Please Remember!", preferredStyle: UIAlertControllerStyle.alert)

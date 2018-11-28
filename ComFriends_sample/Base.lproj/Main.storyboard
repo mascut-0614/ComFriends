@@ -233,6 +233,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Expand" image="expand" id="lRe-yv-aoc" userLabel="Expand"/>
                     <connections>
+                        <outlet property="Detail" destination="fqU-87-U2T" id="9NL-oH-OCB"/>
                         <outlet property="GoLeft" destination="CJw-b2-Low" id="87F-2O-g0J"/>
                         <outlet property="GoRight" destination="zsU-FI-CpX" id="wSH-wX-hq9"/>
                         <outlet property="action" destination="qAC-gd-CoG" id="ad4-Jn-Q7c"/>
@@ -411,7 +412,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q18-mT-muH" userLabel="Department">
-                                <rect key="frame" x="66" y="345" width="250" height="32"/>
+                                <rect key="frame" x="66" y="345" width="235" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
@@ -460,14 +461,14 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2eQ-0C-UFf">
-                                <rect key="frame" x="66" y="467" width="250" height="30"/>
+                                <rect key="frame" x="66" y="467" width="235" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="TGi-6B-M51">
-                                <rect key="frame" x="180" y="227" width="121" height="29"/>
+                                <rect key="frame" x="180" y="226" width="121" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.64127604169999997" green="0.048560493529999998" blue="0.045057741790000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <segments>
@@ -476,6 +477,16 @@
                                     <segment title="3"/>
                                     <segment title="4"/>
                                     <segment title="5~"/>
+                                </segments>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gU0-Wg-eCT">
+                                <rect key="frame" x="90" y="171" width="194" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="公開"/>
+                                    <segment title="限定公開"/>
+                                    <segment title="非公開"/>
                                 </segments>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </segmentedControl>
@@ -488,6 +499,7 @@
                         <outlet property="Club" destination="2eQ-0C-UFf" id="jwd-rB-OcW"/>
                         <outlet property="Department" destination="Q18-mT-muH" id="aAh-oN-oTz"/>
                         <outlet property="Grade" destination="TGi-6B-M51" id="0Y4-Ul-fv0"/>
+                        <outlet property="Secret" destination="gU0-Wg-eCT" id="WjP-E8-c8O"/>
                         <outlet property="Start" destination="Qnj-f2-Jrp" id="ZIV-TI-nKo"/>
                         <segue destination="FrF-SF-gbh" kind="presentation" identifier="ResisterFinish" id="oec-J3-EkA"/>
                     </connections>
@@ -1129,8 +1141,8 @@
         <image name="profile" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="9Wq-Iq-2jf"/>
+        <segue reference="9zj-Vb-aBs"/>
         <segue reference="pDh-I5-rAA"/>
-        <segue reference="t5b-ml-ZQm"/>
+        <segue reference="pGd-KT-t2b"/>
     </inferredMetricsTieBreakers>
 </document>

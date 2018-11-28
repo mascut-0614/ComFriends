@@ -5,6 +5,7 @@ import FirebaseDatabase
 class AvatarViewController:UIViewController{
     
     var ref:DatabaseReference!
+    var wc=WaitController()
     
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Gender: UILabel!
@@ -23,6 +24,20 @@ class AvatarViewController:UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         ref=Database.database().reference()
+        var range:String="wait_time"
+        ref.child("users/"+avatarid+"/community/range").observe(.value) { (snap: DataSnapshot) in  range=(snap.value! as AnyObject).description
+        }
+        wc.wait({return range=="wait_time"}){
+            if(range=="非公開"){
+                self.Department.text="- secret -"
+                self.Grade.text="- secret -"
+                self.Club.text="- secret -"
+            }else{
+                self.LabelDBset(data: "community/department", obj: self.Department)
+                self.LabelDBset(data: "community/grade", obj: self.Grade)
+                self.LabelDBset(data: "community/club", obj: self.Club)
+            }
+        }
         LabelDBset(data: "username", obj: Name)
         LabelDBset(data: "gender", obj: Gender)
         LabelDBset(data: "community/department", obj: Department)

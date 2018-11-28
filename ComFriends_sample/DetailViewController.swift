@@ -7,6 +7,7 @@ class DetailViewController:UIViewController{
     
     var ref:DatabaseReference!
     var detail_id:String!
+    var wc=WaitController()
     
     @IBOutlet weak var Name: UILabel!
     @IBOutlet weak var Gender: UILabel!
@@ -25,11 +26,25 @@ class DetailViewController:UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         ref=Database.database().reference()
+        var range:String="wait_time"
+        ref.child("users/"+detail_id+"/community/range").observe(.value) { (snap: DataSnapshot) in  range=(snap.value! as AnyObject).description
+        }
+        wc.wait({return range=="wait_time"}){
+            if(range=="公開"){
+                self.LabelDBset(data: "community/department", obj: self.Department)
+                self.LabelDBset(data: "community/grade", obj: self.Grade)
+                self.LabelDBset(data: "community/club", obj: self.Club)
+            }else{
+                self.Department.text="- secret -"
+                self.Grade.text="- secret -"
+                self.Club.text="- secret -"
+            }
+        }
         LabelDBset(data: "username", obj: Name)
         LabelDBset(data: "gender", obj: Gender)
-        LabelDBset(data: "community/department", obj: Department)
-        LabelDBset(data: "community/grade", obj: Grade)
-        LabelDBset(data: "community/club", obj: Club)
+        //LabelDBset(data: "community/department", obj: Department)
+        //LabelDBset(data: "community/grade", obj: Grade)
+        //LabelDBset(data: "community/club", obj: Club)
         LabelDBset(data: "chars/1/content", obj: Char1)
         LabelDBset(data: "chars/1/detail", obj: Label1)
         LabelDBset(data: "chars/2/content", obj: Char2)

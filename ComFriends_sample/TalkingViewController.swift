@@ -11,21 +11,53 @@ class TalkingViewController:JSQMessagesViewController {
     var incomingAvatar:JSQMessagesAvatarImage!
     var outgoingAvatar:JSQMessagesAvatarImage!
     
+    var ref:DatabaseReference!
+    var input_status:String="no"
+    var timer:Timer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        ref=Database.database().reference()
+        //Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TalkingViewController.inputCheck), userInfo: nil, repeats: true)
         self.navigationItem.title=avatarname
         setupFirebase()
         setupChatUI()
         self.senderDisplayName=userid
         self.messages=[]
     }
+    //入力状態の確認開始
+    override func viewWillAppear(_ animated: Bool) {
+        timer=Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(TalkingViewController.inputCheck), userInfo: nil, repeats: true)
+    }
+    //確認終了
+    override func viewWillDisappear(_ animated: Bool) {
+        print("timer stop")
+        timer.invalidate()
+    }
+    @objc func inputCheck(){
+        if(inputToolbar.contentView.textView.text! == ""){
+            ref.child(talkAdress+"/"+userid).setValue("no")
+        }else{
+            ref.child(talkAdress+"/"+userid).setValue("yes")
+        }
+        ref.child(talkAdress+"/"+avatarid).observe(.value) { (snap: DataSnapshot) in  self.input_status=(snap.value! as AnyObject).description
+        }
+        if(input_status=="yes"){
+            print(avatarid+" is typing now")
+            self.navigationController?.navigationBar.titleTextAttributes=[.foregroundColor:UIColor.yellow]
+        }else{
+            print(avatarid+" is not typing now")
+            self.navigationController?.navigationBar.titleTextAttributes=[.foregroundColor:UIColor.white]
+        }
+    }
+    
     @IBAction func Profile(_ sender: Any) {
         self.performSegue(withIdentifier: "goAvatar", sender: nil)
     }
     
     func setupFirebase(){
         let rootRef = Database.database().reference()
-        rootRef.child(talkAdress).queryLimited(toLast: 100).observe(DataEventType.childAdded, with: { (snapshot) in
+        rootRef.child(talkAdress+"/content").queryLimited(toLast: 100).observe(DataEventType.childAdded, with: { (snapshot) in
             let valueDic=snapshot.value as? NSDictionary
             let text = valueDic?["text"] as? String ?? ""
             let sender = valueDic?["from"] as? String ?? ""
@@ -63,7 +95,7 @@ class TalkingViewController:JSQMessagesViewController {
         let post = ["from": senderId,
                     "name": senderDisplayName,
                     "text": text]
-        let postRef = rootRef.child(talkAdress).childByAutoId()
+        let postRef = rootRef.child(talkAdress+"/content").childByAutoId()
         postRef.setValue(post)
     }
     @IBAction func BackButton(_ sender: Any) {
@@ -71,7 +103,7 @@ class TalkingViewController:JSQMessagesViewController {
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView, messageDataForItemAt indexPath: IndexPath) -> JSQMessageData {
-        collectionView.frame=CGRect(x:0,y:50,width:375,height:600)
+        collectionView.frame=CGRect(x:0,y:70,width:375,height:600)
         return (self.messages?[indexPath.item])!
     }
     

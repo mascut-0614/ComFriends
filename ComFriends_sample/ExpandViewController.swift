@@ -14,6 +14,8 @@ class ExpandViewController: UIViewController {
     //画面サイズを把握
     let screenWidth:CGFloat=UIScreen.main.bounds.size.width
     let screenHeight:CGFloat=UIScreen.main.bounds.size.height
+    
+    var anime:Bool=false
     //画面内のイメージと結びつけ
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var char1: UIImageView!
@@ -23,6 +25,7 @@ class ExpandViewController: UIViewController {
     @IBOutlet weak var action: UIImageView!
     @IBOutlet weak var GoLeft: UIButton!
     @IBOutlet weak var GoRight: UIButton!
+    @IBOutlet weak var Detail: UIBarButtonItem!
     
     //画面ロード時の処理
     override func viewDidLoad() {
@@ -38,6 +41,7 @@ class ExpandViewController: UIViewController {
         GoLeft.isHidden=true
         GoRight.isHidden=true
         //イラストを対応
+        action.image=UIImage(named:"expand_success")
         action.isHidden=true
         action.center=CGPoint(x:screenWidth/2,y:screenHeight/2)
         //プロフィールのinterest読み取り
@@ -126,13 +130,13 @@ class ExpandViewController: UIViewController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(name.frame.origin.y>500){
             var check:String="wait_time"
-            action.image=UIImage(named:"interest")
             ref.child("users/"+userid+"/interest/"+search_id[now]).setValue("yes")
             ref.child("users/"+search_id[now]+"/interest/"+userid).observe(.value) { (snap: DataSnapshot) in  check=(snap.value! as AnyObject).description
             }
             wc.wait({return check=="wait_time"}){
                 print("check="+check)
                 if(check=="yes"){
+                    self.anime=true
                     //相手側のトークルーム数を変更
                     var you_temp:String="wait_time"
                     var you_int:Int!
@@ -153,7 +157,7 @@ class ExpandViewController: UIViewController {
                     //トークルームの生成
                     self.wc.wait({return check}){
                         let address:String="messages/talk"+userid+"_"+self.search_id[now]
-                        self.ref.child(address).setValue("hello")
+                        self.ref.child(address).setValue([userid:"no",self.search_id[now]:"no","content":"talk_start"])
                         self.ref.child("users/"+self.search_id[now]+"/talkroom/"+you_int.description).setValue(["oppid":userid,"name":accessname,"room":address])
                         self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["oppid":self.search_id[now],"name":self.name.text,"room":address])
                     }
@@ -201,7 +205,10 @@ class ExpandViewController: UIViewController {
             self.name.isHidden=true
             self.name.center=CGPoint(x:self.screenWidth/2,y:self.screenHeight/2)
             self.reset_location()
-            self.action.isHidden=false
+            if(self.anime){
+                self.action.isHidden=false
+                self.anime=false
+            }
             self.search_id.remove(at: now)
             if(self.search_id.count==now){
                 now-=1
@@ -219,6 +226,8 @@ class ExpandViewController: UIViewController {
             AllChange(show: true)
             GoRight.isHidden=true
             GoLeft.isHidden=true
+            Detail.isEnabled=false
+            Detail.tintColor=UIColor(red: 159/255, green: 59/255, blue: 66/255, alpha: 1)
             print("No Member!")
             return
         }
