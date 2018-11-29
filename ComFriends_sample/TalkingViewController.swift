@@ -14,6 +14,7 @@ class TalkingViewController:JSQMessagesViewController {
     var ref:DatabaseReference!
     var input_status:String="no"
     var timer:Timer!
+    var wc=WaitController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,10 +44,8 @@ class TalkingViewController:JSQMessagesViewController {
         ref.child(talkAdress+"/"+avatarid).observe(.value) { (snap: DataSnapshot) in  self.input_status=(snap.value! as AnyObject).description
         }
         if(input_status=="yes"){
-            print(avatarid+" is typing now")
             self.navigationController?.navigationBar.titleTextAttributes=[.foregroundColor:UIColor.yellow]
         }else{
-            print(avatarid+" is not typing now")
             self.navigationController?.navigationBar.titleTextAttributes=[.foregroundColor:UIColor.white]
         }
     }
@@ -74,8 +73,8 @@ class TalkingViewController:JSQMessagesViewController {
         automaticallyScrollsToMostRecentMessage = true
         //自分のID、アイコン、相手のアイコンの設定
         self.senderId = accessname
-        self.incomingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named:"you")!,diameter: 64)
-        self.outgoingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "me")!, diameter: 64)
+        self.incomingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named:avataricon)!,diameter: 64)
+        self.outgoingAvatar = JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: my_icon)!, diameter: 64)
         //BubbleImageの生成
         let bubbleFactory = JSQMessagesBubbleImageFactory()
         //通信相手の発言

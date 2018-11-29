@@ -157,6 +157,7 @@ class ExpandViewController: UIViewController {
                     //相手側のトークルーム数を変更
                     var you_temp:String="wait_time"
                     var you_int:Int!
+                    var you_icon:String="wait_time"
                     var me_temp:String="wait_time"
                     var me_int:Int!
                     var check:Bool=true
@@ -164,7 +165,9 @@ class ExpandViewController: UIViewController {
                     }
                     self.ref.child("users/"+userid+"/talkroom/sum").observe(.value) { (snap: DataSnapshot) in  me_temp=(snap.value! as AnyObject).description
                     }
-                    self.wc.wait({return (you_temp=="wait_time"||me_temp=="wait_time")}){
+                    self.ref.child("users/"+self.search_id[now]+"/icon").observe(.value) { (snap: DataSnapshot) in  you_icon=(snap.value! as AnyObject).description
+                    }
+                    self.wc.wait({return you_temp=="wait_time"||me_temp=="wait_time"||you_icon=="wait_time"}){
                         you_int=Int(you_temp)!+1
                         me_int=Int(me_temp)!+1
                         self.ref.child("users/"+self.search_id[now]+"/talkroom/sum").setValue(you_int.description)
@@ -175,8 +178,8 @@ class ExpandViewController: UIViewController {
                     self.wc.wait({return check}){
                         let address:String="messages/talk"+userid+"_"+self.search_id[now]
                         self.ref.child(address).setValue([userid:"no",self.search_id[now]:"no","content":"talk_start"])
-                        self.ref.child("users/"+self.search_id[now]+"/talkroom/"+you_int.description).setValue(["oppid":userid,"name":accessname,"room":address])
-                        self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["oppid":self.search_id[now],"name":self.name.text,"room":address])
+                        self.ref.child("users/"+self.search_id[now]+"/talkroom/"+you_int.description).setValue(["oppid":userid,"name":accessname,"room":address,"opp_icon":my_icon])
+                        self.ref.child("users/"+userid+"/talkroom/"+me_int.description).setValue(["oppid":self.search_id[now],"name":self.name.text,"room":address,"opp_icon":you_icon])
                     }
                 }
             }

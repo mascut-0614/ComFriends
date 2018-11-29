@@ -92,7 +92,7 @@ class RegisterViewController:UIViewController,UIPickerViewDelegate,UIPickerViewD
             print("name="+Name.text!)
             print("gender="+Gender.titleLabel!.text!)
             num=Int(resisternumber)!+1
-            ref.child("users/"+num.description).setValue(["username":Name.text!,"gender":Gender.titleLabel?.text!]);
+            ref.child("users/"+num.description).setValue(["username":Name.text!,"gender":Gender.titleLabel?.text!,"icon":"me"]);
             ref.child("users/"+num.description+"/interest/0").setValue("yes")
             ref.child("users/"+num.description+"/talkroom/sum").setValue("0")
             self.performSegue(withIdentifier: "goCharSetting", sender: nil)
