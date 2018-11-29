@@ -40,9 +40,6 @@ class AvatarViewController:UIViewController{
         }
         LabelDBset(data: "username", obj: Name)
         LabelDBset(data: "gender", obj: Gender)
-        LabelDBset(data: "community/department", obj: Department)
-        LabelDBset(data: "community/grade", obj: Grade)
-        LabelDBset(data: "community/club", obj: Club)
         LabelDBset(data: "chars/1/content", obj: Char1)
         LabelDBset(data: "chars/1/detail", obj: Label1)
         LabelDBset(data: "chars/2/content", obj: Char2)

@@ -3,6 +3,7 @@ import UIKit
 import FirebaseDatabase
 var userid:String=""
 var accessname:String="wait_time"
+var id_change=false
 
 class EnterViewController: UIViewController {
     //データベースの参照先

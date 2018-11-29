@@ -8,14 +8,14 @@ class ExpandViewController: UIViewController {
     //データベースの参照先
     var ref:DatabaseReference!
     var wc=WaitController()
+    //アニメーション
+    var ActivityIndicator:UIActivityIndicatorView!
     //DB参照時のID
     var search_id:[String]=[]
     var gender:String!
     //画面サイズを把握
     let screenWidth:CGFloat=UIScreen.main.bounds.size.width
     let screenHeight:CGFloat=UIScreen.main.bounds.size.height
-    
-    var anime:Bool=false
     //画面内のイメージと結びつけ
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var char1: UIImageView!
@@ -32,7 +32,23 @@ class ExpandViewController: UIViewController {
         super.viewDidLoad()
         //データベース参照
         ref=Database.database().reference()
+        //ロードアニメーション
+        ActivityIndicator = UIActivityIndicatorView()
+        ActivityIndicator.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        ActivityIndicator.center = self.view.center
+        ActivityIndicator.hidesWhenStopped = true
+        ActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        self.view.addSubview(ActivityIndicator)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         //ネームラベルの初期設定
+        if(id_change){
+            id_change=false
+            now=0
+        }
+        search_id=[]
         name.isUserInteractionEnabled=true
         name.frame=CGRect(x:0,y:0,width:128,height:64)
         name.center=CGPoint(x:screenWidth/2,y:screenHeight/2)
@@ -41,9 +57,7 @@ class ExpandViewController: UIViewController {
         GoLeft.isHidden=true
         GoRight.isHidden=true
         //イラストを対応
-        action.image=UIImage(named:"expand_success")
         action.isHidden=true
-        action.center=CGPoint(x:screenWidth/2,y:screenHeight/2)
         //プロフィールのinterest読み取り
         var sum:String="wait_time"
         ref.child("users/sum").observe(.value) { (snap: DataSnapshot) in sum=(snap.value! as AnyObject).description
@@ -81,9 +95,10 @@ class ExpandViewController: UIViewController {
                     check+=1
                 }
             }
-            
         }
+        
     }
+    
     @IBAction func touchLeft(_ sender: Any) {
         now-=1
         friends_reset()
@@ -94,6 +109,7 @@ class ExpandViewController: UIViewController {
     }
     @IBAction func touchLogout(_ sender: Any) {
         self.performSegue(withIdentifier: "logout_from_expand", sender: nil)
+        id_change=true
     }
     @IBAction func touchDetail(_ sender: Any) {
         
@@ -130,13 +146,14 @@ class ExpandViewController: UIViewController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if(name.frame.origin.y>500){
             var check:String="wait_time"
+            action.image=UIImage(named: "expand_wait")
             ref.child("users/"+userid+"/interest/"+search_id[now]).setValue("yes")
             ref.child("users/"+search_id[now]+"/interest/"+userid).observe(.value) { (snap: DataSnapshot) in  check=(snap.value! as AnyObject).description
             }
             wc.wait({return check=="wait_time"}){
                 print("check="+check)
                 if(check=="yes"){
-                    self.anime=true
+                    self.action.image=UIImage(named: "expand_success")
                     //相手側のトークルーム数を変更
                     var you_temp:String="wait_time"
                     var you_int:Int!
@@ -198,6 +215,8 @@ class ExpandViewController: UIViewController {
         self.char2.isHidden=true
         self.char3.isHidden=true
         self.char4.isHidden=true
+        self.GoLeft.isHidden=true
+        self.GoRight.isHidden=true
         UIView.animate(withDuration: 1.0, delay: 0.0, animations: {
             self.name.center.y += 200.0
         }){_ in
@@ -205,10 +224,7 @@ class ExpandViewController: UIViewController {
             self.name.isHidden=true
             self.name.center=CGPoint(x:self.screenWidth/2,y:self.screenHeight/2)
             self.reset_location()
-            if(self.anime){
-                self.action.isHidden=false
-                self.anime=false
-            }
+            self.action.isHidden=false
             self.search_id.remove(at: now)
             if(self.search_id.count==now){
                 now-=1
@@ -222,6 +238,7 @@ class ExpandViewController: UIViewController {
     }
     //リアクション後の表示プロフィールの変更
     func friends_reset(){
+        ActivityIndicator.startAnimating()
         if(search_id.isEmpty){
             AllChange(show: true)
             GoRight.isHidden=true
@@ -261,10 +278,8 @@ class ExpandViewController: UIViewController {
             self.ImageDBset(data: "2", obj: self.char2)
             self.ImageDBset(data: "3", obj: self.char3)
             self.ImageDBset(data: "4", obj: self.char4)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.AllChange(show: false)
-            }
+            self.ActivityIndicator.stopAnimating()
+            self.AllChange(show: false)
         }
     }
     func AllChange(show:Bool){

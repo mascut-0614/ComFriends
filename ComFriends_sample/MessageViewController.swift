@@ -45,6 +45,7 @@ class MessageViewController: UIViewController,UITableViewDelegate,UITableViewDat
     
     @IBAction func LogoutButton(_ sender: Any) {
         self.performSegue(withIdentifier: "logout_from_message", sender: nil)
+        id_change=true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

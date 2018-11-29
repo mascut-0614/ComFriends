@@ -11,13 +11,17 @@ class ProfileViewController:UIViewController{
     
     var ref:DatabaseReference!
     var wc=WaitController()
-    var gender:String="wait_time"
+    var gender:String=""
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //データベース参照
         ref=Database.database().reference()
-        Name.isHidden=true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        AllChange(show: true)
+        gender="wait_time"
         ref.child("users/"+userid+"/gender").observe(.value) { (snap: DataSnapshot) in  self.gender=(snap.value! as AnyObject).description
         }
         self.wc.wait({return self.gender=="wait_time"}){
@@ -27,18 +31,26 @@ class ProfileViewController:UIViewController{
                 
                 self.Name.backgroundColor=UIColor(red: 239/255, green: 88/255, blue: 76/255, alpha: 1)
             }
-            self.Name.isHidden=false
             self.LabelDBset(data: "username", obj: self.Name)
             self.ImageDBset(data: "1", obj: self.Char1)
             self.ImageDBset(data: "2", obj: self.Char2)
             self.ImageDBset(data: "3", obj: self.Char3)
             self.ImageDBset(data: "4", obj: self.Char4)
+            self.AllChange(show: false)
         }
     }
     @IBAction func logoutButton(_ sender: Any) {
         self.performSegue(withIdentifier: "logout_from_profile", sender: nil)
+        id_change=true
     }
     
+    func AllChange(show:Bool){
+        Char1.isHidden=show
+        Char2.isHidden=show
+        Char3.isHidden=show
+        Char4.isHidden=show
+        Name.isHidden=show
+    }
     //プロフィールに表示するニックネームの設定
     func LabelDBset(data:String,obj:UILabel){
         ref.child("users/"+userid+"/"+data).observe(.value) { (snap: DataSnapshot) in  obj.text=(snap.value! as AnyObject).description
