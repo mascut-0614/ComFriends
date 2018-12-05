@@ -31,6 +31,7 @@ class RegisterViewController:UIViewController,UIPickerViewDelegate,UIPickerViewD
     }
     
     @IBAction func TouchGender(_ sender: Any) {
+        self.view.endEditing(true)
         PickerPush()
     }
     
@@ -83,6 +84,7 @@ class RegisterViewController:UIViewController,UIPickerViewDelegate,UIPickerViewD
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        vi.removeFromSuperview()
     }
     
     @IBAction func touchNext(_ sender: Any) {

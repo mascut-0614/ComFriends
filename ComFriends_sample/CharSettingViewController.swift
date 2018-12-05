@@ -23,11 +23,15 @@ class CharSettingViewController:UIViewController,UIPickerViewDelegate,UIPickerVi
         input_num=1
         Attention.image=UIImage(named: "attention")
         Attention.isHidden=true
+        Detail.delegate=self as? UITextFieldDelegate
     }
     
     @IBAction func touchChar(_ sender: Any) {
+        self.view.endEditing(true)
         PickerPush()
     }
+    
+    
     
     func PickerPush(){
         pickerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: pickerView.bounds.size.height)
@@ -104,5 +108,6 @@ class CharSettingViewController:UIViewController,UIPickerViewDelegate,UIPickerVi
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        vi.removeFromSuperview()
     }
 }

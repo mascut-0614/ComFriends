@@ -29,6 +29,7 @@ class CommunityViewController:UIViewController,UIPickerViewDelegate,UIPickerView
     
     
     @IBAction func touchDepartment(_ sender: Any) {
+        self.view.endEditing(true)
         PickerPush()
     }
     
@@ -106,6 +107,7 @@ class CommunityViewController:UIViewController,UIPickerViewDelegate,UIPickerView
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        vi.removeFromSuperview()
     }
     
 }
